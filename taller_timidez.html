@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taller Timidez - Psicología Social</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #4c9aff 100%);
+            min-height: 100vh;
+            padding: 20px;
+            transition: background 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50px;
+            padding: 12px 24px;
+            cursor: pointer;
+            font-size: 1.2em;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .dark-mode .theme-toggle {
+            background: rgba(30, 30, 46, 0.9);
+            color: white;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .dark-mode .container {
+            background: #1e1e30;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #5e72e4 0%, #825ee4 100%);
+            padding: 40px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px;
+            transition: background 0.3s ease;
+        }
+
+        .dark-mode .content {
+            background: #1e1e30;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+            transition: background 0.3s ease;
+        }
+
+        .dark-mode .section-title {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            box-shadow: 0 4px 15px rgba(42, 82, 152, 0.6);
+        }
+
+        .case-study {
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #00acc1;
+            line-height: 1.8;
+            font-size: 1.05em;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .dark-mode .case-study {
+            background: linear-gradient(135deg, #263238 0%, #37474f 100%);
+            color: #e0e0e0;
+            border-left: 5px solid #26c6da;
+        }
+
+        .case-study strong {
+            color: #00838f;
+            transition: color 0.3s ease;
+        }
+
+        .dark-mode .case-study strong {
+            color: #4dd0e1;
+        }
+
+        .behaviors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .behavior-card {
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .behavior-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .behavior-card.conductual {
+            background: linear-gradient(135deg, #bbdefb 0%, #90caf9 100%);
+            border-top: 4px solid #1976d2;
+            transition: background 0.3s ease;
+        }
+
+        .dark-mode .behavior-card.conductual {
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            border-top: 4px solid #64b5f6;
+        }
+
+        .behavior-card.cognitivo {
+            background: linear-gradient(135deg, #c5cae9 0%, #9fa8da 100%);
+            border-top: 4px solid #5e35b1;
+            transition: background 0.3s ease;
+        }
+
+        .dark-mode .behavior-card.cognitivo {
+            background: linear-gradient(135deg, #311b92 0%, #4527a0 100%);
+            border-top: 4px solid #9575cd;
+        }
+
+        .behavior-card.emocional {
+            background: linear-gradient(135deg, #b2dfdb 0%, #80cbc4 100%);
+            border-top: 4px solid #00897b;
+            transition: background 0.3s ease;
+        }
+
+        .dark-mode .behavior-card.emocional {
+            background: linear-gradient(135deg, #004d40 0%, #00695c 100%);
+            border-top: 4px solid #4db6ac;
+        }
+
+        .behavior-card h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .dark-mode .behavior-card h3 {
+            color: #e0e0e0;
+        }
+
+        .behavior-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .behavior-card li {
+            padding: 10px 0;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.6;
+            transition: color 0.3s ease;
+        }
+
+        .dark-mode .behavior-card li {
+            color: #d0d0d0;
+        }
+
+        .behavior-card li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #1976d2;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: color 0.3s ease;
+        }
+
+        .dark-mode .behavior-card li:before {
+            color: #64b5f6;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .media-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .dark-mode .media-card {
+            background: #2a2a3e;
+        }
+
+        .media-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .dark-mode .media-card:hover {
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .media-image {
+            width: 100%;
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .media-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .media-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 68px;
+            height: 48px;
+            background: rgba(255, 0, 0, 0.9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .media-image:hover .play-button {
+            background: rgba(255, 0, 0, 1);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .play-button::before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 20px solid white;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            margin-left: 4px;
+        }
+
+        .media-content {
+            padding: 20px;
+        }
+
+        .media-content h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            transition: color 0.3s ease;
+        }
+
+        .dark-mode .media-content h4 {
+            color: #e0e0e0;
+        }
+
+        .media-type {
+            display: inline-block;
+            background: linear-gradient(135deg, #5e72e4 0%, #4c9aff 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-bottom: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .dark-mode .media-type {
+            background: linear-gradient(135deg, #3949ab 0%, #1e88e5 100%);
+        }
+
+        .media-content p {
+            color: #4a5568;
+            line-height: 1.6;
+            font-size: 0.95em;
+            transition: color 0.3s ease;
+        }
+
+        .dark-mode .media-content p {
+            color: #b0b0b0;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #5e72e4 0%, #4c9aff 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            font-size: 0.95em;
+            transition: background 0.3s ease;
+        }
+
+        .dark-mode .footer {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+
+        .footer-section {
+            margin-bottom: 15px;
+        }
+
+        .footer-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .footer-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+
+        .team-members {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .team-member {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .team-member:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .icon {
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-text">Modo Oscuro</span>
+    </button>
+
+    <div class="container">
+        <div class="header">
+            <h1>🎭 Taller de Timidez</h1>
+            <p>Psicología Social 2025-2 | Ingeniería de Sistemas</p>
+        </div>
+
+        <div class="content">
+            <!-- Punto 1: Situación Cotidiana -->
+            <div class="section">
+                <div class="section-title">
+                    📝 1. Situación Cotidiana de Timidez
+                </div>
+                <div class="case-study">
+                    <p>Hay un compañero en la universidad que siempre llega temprano a clase y se sienta en las últimas filas, cerca de la pared. Durante las exposiciones grupales, aunque domina muy bien el tema técnico, habla en voz baja y evita el contacto visual con la audiencia. Cuando el profesor hace preguntas abiertas al grupo, aunque sepa la respuesta correcta, prefiere quedarse callado y espera a que otros participen primero.</p>
+                    
+                    <p style="margin-top: 15px;"><strong>Causas:</strong> Probablemente tuvo experiencias previas donde se sintió juzgado o criticado al hablar en público. También puede ser que en su entorno familiar no se fomentó mucho la expresión verbal abierta.</p>
+                    
+                    <p style="margin-top: 10px;"><strong>Emociones:</strong> Experimenta ansiedad anticipatoria antes de las clases, nerviosismo cuando debe participar, y alivio cuando logra evitar situaciones de exposición social. Después, siente frustración consigo mismo por no haber participado.</p>
+                    
+                    <p style="margin-top: 10px;"><strong>Características:</strong> Es una persona muy observadora, reflexiva, y cuando interactúa en grupos pequeños o de confianza muestra su verdadero conocimiento y personalidad amable.</p>
+                    
+                    <p style="margin-top: 10px;"><strong>Consecuencias:</strong> Pierde oportunidades de networking, los profesores no reconocen completamente su potencial académico, y en trabajos grupales otros asumen roles de liderazgo aunque él tenga mejores ideas.</p>
+                </div>
+            </div>
+
+            <!-- Punto 2: Comportamientos Clave -->
+            <div class="section">
+                <div class="section-title">
+                    🧠 2. Comportamientos Clave de una Persona Tímida
+                </div>
+                <div class="behaviors-grid">
+                    <div class="behavior-card conductual">
+                        <h3><span class="icon">🚶</span> Conductuales</h3>
+                        <ul>
+                            <li>Evita el contacto visual directo durante conversaciones</li>
+                            <li>Habla en volumen bajo y con ritmo de voz dubitativo</li>
+                            <li>Adopta posturas corporales cerradas (brazos cruzados, hombros encogidos)</li>
+                            <li>Se mantiene en la periferia de grupos sociales, prefiriendo zonas menos visibles</li>
+                            <li>Reduce al mínimo su participación voluntaria en discusiones grupales</li>
+                            <li>Presenta rubor facial o temblor en manos en situaciones de exposición</li>
+                        </ul>
+                    </div>
+
+                    <div class="behavior-card cognitivo">
+                        <h3><span class="icon">💭</span> Cognoscitivos</h3>
+                        <ul>
+                            <li>Pensamientos anticipatorios negativos: "Van a pensar que soy tonto"</li>
+                            <li>Autocrítica excesiva después de interacciones sociales</li>
+                            <li>Sobrestimación de la evaluación negativa de otros hacia su persona</li>
+                            <li>Rumiación constante sobre errores sociales pasados</li>
+                            <li>Creencias limitantes sobre capacidades propias: "No soy bueno hablando"</li>
+                            <li>Hipervigilancia hacia señales de rechazo o desaprobación social</li>
+                        </ul>
+                    </div>
+
+                    <div class="behavior-card emocional">
+                        <h3><span class="icon">❤️</span> Emocionales</h3>
+                        <ul>
+                            <li>Ansiedad social intensa ante la perspectiva de interacciones</li>
+                            <li>Sentimientos de inadecuación y baja autoestima situacional</li>
+                            <li>Temor al juicio y al rechazo por parte de otros</li>
+                            <li>Vergüenza y culpa tras situaciones sociales percibidas como fallidas</li>
+                            <li>Incomodidad física: taquicardia, sudoración, tensión muscular</li>
+                            <li>Deseo simultáneo de conexión social y de aislamiento protector</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Punto 3: Películas, Series, Libros y Canciones -->
+            <div class="section">
+                <div class="section-title">
+                    🎬 3. Medios donde la Timidez es el Tema Central
+                </div>
+                <div class="media-grid">
+                    <div class="media-card">
+                        <a href="https://youtu.be/2eA7piH-b50" target="_blank" style="text-decoration: none; color: inherit;">
+                            <div class="media-image">
+                                <img src="https://img.youtube.com/vi/2eA7piH-b50/hqdefault.jpg" alt="The Big Bang Theory">
+                                <div class="play-button"></div>
+                            </div>
+                        </a>
+                        <div class="media-content">
+                            <span class="media-type">📺 Serie</span>
+                            <h4>The Big Bang Theory</h4>
+                            <p>Raj Koothrappali representa la timidez extrema, siendo incapaz de hablar con mujeres sin alcohol. La serie muestra cómo la timidez afecta sus relaciones y cómo gradualmente trabaja en superarla.</p>
+                        </div>
+                    </div>
+
+                    <div class="media-card">
+                        <a href="https://www.youtube.com/watch?v=n5rh7O4IDc0" target="_blank" style="text-decoration: none; color: inherit;">
+                            <div class="media-image">
+                                <img src="https://img.youtube.com/vi/n5rh7O4IDc0/hqdefault.jpg" alt="Las Ventajas de Ser Invisible">
+                                <div class="play-button"></div>
+                            </div>
+                        </a>
+                        <div class="media-content">
+                            <span class="media-type">🎬 Película</span>
+                            <h4>Las Ventajas de Ser Invisible (2012)</h4>
+                            <p>Charlie es un adolescente tímido e introvertido que lucha con traumas del pasado. La película explora su camino hacia la aceptación social y la construcción de conexiones genuinas.</p>
+                        </div>
+                    </div>
+
+                    <div class="media-card">
+                        <a href="https://youtu.be/_ATmglDh1ks" target="_blank" style="text-decoration: none; color: inherit;">
+                            <div class="media-image">
+                                <img src="https://img.youtube.com/vi/_ATmglDh1ks/hqdefault.jpg" alt="El Club de los Corazones Solitarios">
+                                <div class="play-button"></div>
+                            </div>
+                        </a>
+                        <div class="media-content">
+                            <span class="media-type">📚 Libro</span>
+                            <h4>"El Club de los Corazones Solitarios" - Elizabeth Eulberg</h4>
+                            <p>Penny forma un club para personas tímidas y socialmente ansiosas. El libro trata sobre superar miedos sociales y encontrar fortaleza en la vulnerabilidad compartida.</p>
+                        </div>
+                    </div>
+
+                    <div class="media-card">
+                        <a href="https://www.youtube.com/watch?v=SgM3r8xKfGE" target="_blank" style="text-decoration: none; color: inherit;">
+                            <div class="media-image">
+                                <img src="https://img.youtube.com/vi/SgM3r8xKfGE/hqdefault.jpg" alt="Breathe Me - Sia">
+                                <div class="play-button"></div>
+                            </div>
+                        </a>
+                        <div class="media-content">
+                            <span class="media-type">🎵 Canción</span>
+                            <h4>"Breathe Me" - Sia</h4>
+                            <p>Una poderosa balada que expresa la vulnerabilidad y la sensación de estar abrumado por la ansiedad. La letra refleja el deseo de ayuda cuando uno se siente perdido y la dificultad de pedir apoyo en momentos de crisis emocional.</p>
+                        </div>
+                    </div>
+
+                    <div class="media-card">
+                        <a href="https://youtu.be/4JY8-XBGJmA" target="_blank" style="text-decoration: none; color: inherit;">
+                            <div class="media-image">
+                                <img src="https://img.youtube.com/vi/4JY8-XBGJmA/hqdefault.jpg" alt="El Discurso del Rey">
+                                <div class="play-button"></div>
+                            </div>
+                        </a>
+                        <div class="media-content">
+                            <span class="media-type">🎬 Película</span>
+                            <h4>El Discurso del Rey (2010)</h4>
+                            <p>Basada en hechos reales, narra la historia del Rey Jorge VI quien padecía tartamudez severa y ansiedad al hablar en público. Con ayuda de un terapeuta poco convencional, logra superar sus miedos para dirigirse a su nación en momentos críticos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-section">
+                <p class="footer-title">🎓 Escuela Colombiana de Ingeniería Julio Garavito</p>
+                <p>Psicología Social 2025-2 | Taller de Timidez</p>
+            </div>
+            <div class="footer-section">
+                <p class="footer-title">👥 Integrantes del Equipo</p>
+                <div class="team-members">
+                    <div class="team-member">Andersson David Sánchez Méndez</div>
+                    <div class="team-member">Cristian Santiago Pedraza Rodríguez</div>
+                    <div class="team-member">Javier Mauricio Romero Deaquiz</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                icon.textContent = '☀️';
+                text.textContent = 'Modo Claro';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                icon.textContent = '🌙';
+                text.textContent = 'Modo Oscuro';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Cargar tema guardado
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-icon').textContent = '☀️';
+                document.getElementById('theme-text').textContent = 'Modo Claro';
+            }
+        });
+    </script>
+</body>
+</html>
